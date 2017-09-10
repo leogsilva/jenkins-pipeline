@@ -106,6 +106,24 @@ def containerBuildPub(Map args) {
     }
 }
 
+def containerBuildPubECR(Map args) {
+
+    println "Running Docker build/publish: ${args.host}/${args.repo}:${args.tags}"
+
+    docker.withRegistry("https://${args.host}", "${args.auth_id}") {
+
+        // def img = docker.build("${args.acct}/${args.repo}", args.dockerfile)
+        def img = docker.image("${args.repo}")
+        sh "docker build --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${args.repo} ${args.dockerfile}"
+        for (int i = 0; i < args.tags.size(); i++) {
+            sh "docker tag ${args.repo}:${args.tags.get(i)} ${args.host}/${args.repo}:${args.tags.get(i)}"
+            sh "docker push ${args.host}/${args.repo}:${args.tags.get(i)}"
+        }
+
+        return img.id
+    }
+}
+
 def getContainerTags(config, Map tags = [:]) {
 
     println "getting list of tags for container"
