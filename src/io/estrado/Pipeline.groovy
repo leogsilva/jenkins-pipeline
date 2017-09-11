@@ -114,7 +114,7 @@ def containerBuildPubECR(Map args) {
 
         // def img = docker.build("${args.acct}/${args.repo}", args.dockerfile)
         def img = docker.image("${args.repo}")
-        sh "docker build --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${args.repo} ${args.dockerfile}"
+        sh "docker build --build-arg VCS_REF=${env.GIT_SHA} --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` -t ${args.repo} -f ${args.dockerfile} ."
         for (int i = 0; i < args.tags.size(); i++) {
             sh "docker tag ${args.repo}:latest ${args.host}/${args.repo}:${args.tags.get(i)}"
             sh "docker push ${args.host}/${args.repo}:${args.tags.get(i)}"
