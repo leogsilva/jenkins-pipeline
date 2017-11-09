@@ -5,6 +5,7 @@ package io.estrado;
 import org.yaml.snakeyaml.Yaml
 
 def printYaml(String filename) {
+    sh "pwd"
     Yaml parser = new Yaml()
     println "Parting filename: ${filename}"
     List example = parser.load((filename as File).text)
