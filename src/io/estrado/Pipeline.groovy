@@ -8,8 +8,9 @@ import java.util.*
 
 def updateYaml(String filename, Map newContent, String newFilename ) {
   Yaml parser = new Yaml()
+  def fileReader = new FileReader(fileName)
   println "Parting filename: ${filename}"
-  def loaded = parser.loadAs(yaml, java.util.Map.class);
+  def loaded = parser.loadAs(fileReader, java.util.Map.class);
   newContent.each{ k, v -> loaded.put(k,v) }
   def file = new File(fileName)
   def stringWriter = new StringWriter()
