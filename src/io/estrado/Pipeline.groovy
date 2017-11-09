@@ -55,6 +55,41 @@ def helmDeploy(Map args) {
     }
 }
 
+def helmDeployWithFile(Map args) {
+    //configure helm client and confirm tiller process is installed
+    helmConfig()
+
+    def String namespace
+
+    // If namespace isn't parsed into the function set the namespace to the name
+    if (args.namespace == null) {
+        namespace = args.name
+    } else {
+        namespace = args.namespace
+    }
+
+    if (args.config_file == null) {
+      helmDeploy(args)
+      return
+    }
+
+    if (args.dry_run) {
+        println "Running dry-run deployment"
+
+        sh "helm upgrade --dry-run --install ${args.name} ${args.chart_name} -f ${args.config_file} --namespace=${namespace}"
+    } else {
+        println "Running deployment"
+
+        // reimplement --wait once it works reliable
+        sh "helm upgrade --recreate-pods --force --install ${args.name} ${args.chart_name} -f ${args.config_file} --namespace=${namespace}"
+
+        // sleeping until --wait works reliably
+        sleep(20)
+
+        echo "Application ${args.name} successfully deployed. Use helm status ${args.name} to check"
+    }
+}
+
 def helmDelete(Map args) {
         println "Running helm delete ${args.name}"
 
