@@ -9,9 +9,9 @@ import java.util.*
 //, String newFilename
 def updateYaml(String filename, Map newContent ) {
   Yaml parser = new Yaml()
-  def fileReader = new FileReader(filename)
-  println "Parting filename: ${filename}"
-  def loaded = parser.loadAs(fileReader, java.util.Map.class);
+//  def fileReader = new FileReader(filename)
+//  println "Parting filename: ${filename}"
+  def loaded = parser.loadAs(filename, java.util.Map.class);
   newContent.each{ k, v -> loaded.put(k,v) }
   def file = new File(fileName)
   def stringWriter = new StringWriter()
