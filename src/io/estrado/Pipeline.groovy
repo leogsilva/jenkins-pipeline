@@ -6,7 +6,9 @@ import org.yaml.snakeyaml.Yaml
 
 def printYaml(String filename) {
     Yaml parser = new Yaml()
+    println "Parting filename: ${filename}"
     List example = parser.load((filename as File).text)
+    println "Found ${example}"
     example.each{println it.subject}
 }
 
