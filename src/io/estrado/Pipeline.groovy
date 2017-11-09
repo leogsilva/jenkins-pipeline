@@ -2,22 +2,21 @@
 package io.estrado;
 
 @Grab('org.yaml:snakeyaml:1.17')
-import org.yaml.snakeyaml.Yaml
 
-def printYaml(String filename) {
-  Yaml parser = new Yaml()
+def updateYaml(String filename, java.util.Map newContent, String newFilename ) {
+  Yaml parser = new org.yaml.snakeyaml.Yaml()
   println "Parting filename: ${filename}"
-  sh 'find ./'
-  List example = parser.load((filename as File).text)
-  println "Found ${example}"
-  example.each{println it.subject}
+  def loaded = parser.loadAs(yaml, java.util.Map.class);
+  newContent.each{ k, v -> loaded.put(k,v) }
+  def file = new java.io.File(fileName)
+  def stringWriter = new StringWriter()
+  parser.dump(newContent, stringWriter)
+  def fos = new FileOutputStream(newFilename)
+  fos.write(writer.toString().getBytes())
+  fos.flush()
+  fos.close()
 }
 
-def saveYaml(Map newContent, String fileName) {
-  Yaml parser = new Yaml()
-  def file = new File(fileName)
-  //parser.dump(newContent)
-}
 
 def kubectlTest() {
     // Test that kubectl can correctly communication with the Kubernetes API
