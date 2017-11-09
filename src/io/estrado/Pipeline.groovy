@@ -93,12 +93,12 @@ def helmDeployWithFile(Map args) {
     if (args.dry_run) {
         println "Running dry-run deployment"
 
-        sh "helm upgrade --dry-run --install ${args.name} ${args.chart_name} -f ${args.config_file} --namespace=${namespace}"
+        sh "helm upgrade --dry-run --install ${args.name} ${args.chart_name} -f ${args.config_file} --version ${args.chart_version} --namespace=${namespace}"
     } else {
         println "Running deployment"
 
         // reimplement --wait once it works reliable
-        sh "helm upgrade --recreate-pods --force --install ${args.name} ${args.chart_name} -f ${args.config_file} --namespace=${namespace}"
+        sh "helm upgrade --recreate-pods --force --install ${args.name} ${args.chart_name} -f ${args.config_file} --version ${args.chart_version} --namespace=${namespace}"
 
         // sleeping until --wait works reliably
         sleep(20)
