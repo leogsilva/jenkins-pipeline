@@ -2,13 +2,16 @@
 package io.estrado;
 
 @Grab('org.yaml:snakeyaml:1.17')
+import org.yaml.snakeyaml.Yaml
+import java.io.*
+import java.util.*
 
-def updateYaml(String filename, java.util.Map newContent, String newFilename ) {
-  Yaml parser = new org.yaml.snakeyaml.Yaml()
+def updateYaml(String filename, Map newContent, String newFilename ) {
+  Yaml parser = new Yaml()
   println "Parting filename: ${filename}"
   def loaded = parser.loadAs(yaml, java.util.Map.class);
   newContent.each{ k, v -> loaded.put(k,v) }
-  def file = new java.io.File(fileName)
+  def file = new File(fileName)
   def stringWriter = new StringWriter()
   parser.dump(newContent, stringWriter)
   def fos = new FileOutputStream(newFilename)
