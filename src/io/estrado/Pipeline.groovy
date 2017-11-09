@@ -8,7 +8,7 @@ import java.util.*
 
 def updateYaml(String filename, Map newContent, String newFilename ) {
   Yaml parser = new Yaml()
-  def fileReader = new FileReader(fileName)
+  def fileReader = new FileReader(filename)
   println "Parting filename: ${filename}"
   def loaded = parser.loadAs(fileReader, java.util.Map.class);
   newContent.each{ k, v -> loaded.put(k,v) }
