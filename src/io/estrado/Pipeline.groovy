@@ -5,12 +5,18 @@ package io.estrado;
 import org.yaml.snakeyaml.Yaml
 
 def printYaml(String filename) {
-    sh "pwd"
-    Yaml parser = new Yaml()
-    println "Parting filename: ${filename}"
-    List example = parser.load((filename as File).text)
-    println "Found ${example}"
-    example.each{println it.subject}
+  Yaml parser = new Yaml()
+  println "Parting filename: ${filename}"
+  sh 'find ./'
+  List example = parser.load((filename as File).text)
+  println "Found ${example}"
+  example.each{println it.subject}
+}
+
+def saveYaml(Map newContent, String fileName) {
+  Yaml parser = new Yaml()
+  def file = new File(fileName)
+  //parser.dump(newContent)
 }
 
 def kubectlTest() {
