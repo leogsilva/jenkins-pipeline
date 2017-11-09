@@ -4,6 +4,12 @@ package io.estrado;
 @Grab('org.yaml:snakeyaml:1.17')
 import org.yaml.snakeyaml.Yaml
 
+def printYaml(String filename) {
+    Yaml parser = new Yaml()
+    List example = parser.load((filename as File).text)
+    example.each{println it.subject}
+}
+
 def kubectlTest() {
     // Test that kubectl can correctly communication with the Kubernetes API
     println "checking kubectl connnectivity to the API"
