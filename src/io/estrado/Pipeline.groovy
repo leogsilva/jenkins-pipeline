@@ -6,7 +6,8 @@ import org.yaml.snakeyaml.Yaml
 import java.io.*
 import java.util.*
 
-def updateYaml(String filename, Map newContent, String newFilename ) {
+//, String newFilename
+def updateYaml(String filename, Map newContent ) {
   Yaml parser = new Yaml()
   def fileReader = new FileReader(filename)
   println "Parting filename: ${filename}"
@@ -15,10 +16,11 @@ def updateYaml(String filename, Map newContent, String newFilename ) {
   def file = new File(fileName)
   def stringWriter = new StringWriter()
   parser.dump(newContent, stringWriter)
-  def fos = new FileOutputStream(newFilename)
-  fos.write(writer.toString().getBytes())
-  fos.flush()
-  fos.close()
+  return stringWriter.toString()
+//  def fos = new FileOutputStream(newFilename)
+//  fos.write(writer.toString().getBytes())
+//  fos.flush()
+//  fos.close()
 }
 
 
