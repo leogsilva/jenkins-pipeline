@@ -122,6 +122,9 @@ def helmTest(Map args) {
 def gitEnvVars() {
     // create git envvars
     println "Setting envvars to tag container"
+    if (! env.BRANCH_NAME) {
+      env.BRANCH_NAME = "master"
+    }
 
     sh 'git rev-parse HEAD > git_commit_id.txt'
     try {
@@ -139,6 +142,7 @@ def gitEnvVars() {
         error "${e}"
     }
     println "env.GIT_REMOTE_URL ==> ${env.GIT_REMOTE_URL}"
+    println "env.BRANCH_NAME ==> ${env.BRANCH_NAME}"
 }
 
 
@@ -185,7 +189,7 @@ def getContainerTags(config, Map tags = [:]) {
 
     try {
         // if PR branch tag with only branch name
-        if (env.BRANCH_NAME.contains('PR')) {
+        if (env.BRANCH_NAME && env.BRANCH_NAME.contains('PR')) {
             commit_tag = env.BRANCH_NAME
             tags << ['commit': commit_tag]
             return tags
